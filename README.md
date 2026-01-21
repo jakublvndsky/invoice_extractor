@@ -143,10 +143,7 @@ The project defines the following exceptions:
 - `pydantic>=2.12.5` - Walidacja danych i strukturyzowane wyjście
 - `pydantic-settings>=2.12.0` - Zarządzanie ustawieniami
 
-## Licencja / License
-
-[Określ licencję projektu / Specify project license]
 
 ## Autor / Author
 
-[Twoje imię / Your name]
+jakublvndsky
