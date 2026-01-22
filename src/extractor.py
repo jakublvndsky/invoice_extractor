@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import AsyncOpenAI
 from src.schemas import Invoice
 
 
@@ -11,15 +11,17 @@ class InvoiceError(Exception):
 
 
 class InvoiceExtractor:
-    def __init__(self, client: OpenAI):
+    def __init__(self, client: AsyncOpenAI):
         self.client = client
 
-    def extract_info(self, invoice_data: str, model: str = "gpt-4o-mini") -> Invoice:
+    async def extract_info(
+        self, invoice_data: str, model: str = "gpt-4o-mini"
+    ) -> Invoice:
         if not invoice_data.strip():
             raise InvoiceError("Nie poprawnie przesłana faktura")
         else:
             try:
-                response = self.client.chat.completions.parse(
+                response = await self.client.chat.completions.parse(
                     model=model,
                     messages=[
                         {"role": "user", "content": invoice_data},

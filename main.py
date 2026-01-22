@@ -1,13 +1,15 @@
-from openai import OpenAI
 import src.extractor as invoice_extractor
+import asyncio
+from openai import AsyncOpenAI
 from src.config import settings
 
 
 if __name__ == "__main__":
     extractor = invoice_extractor.InvoiceExtractor(
-        OpenAI(api_key=settings.OPENAI_API_KEY)
+        AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
     )
-    output = extractor.extract_info(""" Od: Sklep "Elektronika i Kawa" <no-reply@electro-coffee.pl>
+    output = asyncio.run(
+        extractor.extract_info(""" Od: Sklep "Elektronika i Kawa" <no-reply@electro-coffee.pl>
 Temat: Twoje zamówienie #99281
 
 Cześć! Dzięki za zakupy. Poniżej szczegóły Twojej ostatniej transakcji.
@@ -26,4 +28,5 @@ VAT (23%): 875.22
 
 Dziękujemy i zapraszamy ponownie!
 Zespół E&K """)
+    )
     print(output)
