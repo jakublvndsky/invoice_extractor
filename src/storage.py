@@ -34,3 +34,16 @@ class VectorStorage:
             ],
         )
         print("✅ Zapisano fakturę w Qdrant!")
+
+    async def search(self, query: str, limit: int = 3):
+        vector_query = await self.openai_client.embeddings.create(
+            input=query, model="text-embedding-3-small"
+        )
+
+        search_result = await self.qdrant.query_points(
+            collection_name="invoices",
+            query=vector_query.data[0].embedding,
+            limit=limit,
+        )
+
+        return search_result

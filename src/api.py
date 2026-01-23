@@ -8,6 +8,11 @@ from contextlib import asynccontextmanager
 from src.storage import VectorStorage, AsyncQdrantClient
 
 
+class SearchRequest(BaseModel):
+    query: str
+    limit: int = 3
+
+
 class InvoiceRequest(BaseModel):
     content: str
 
@@ -31,3 +36,9 @@ async def extract(request: Request, body: InvoiceRequest):
     response = await request.app.state.extractor.extract_info(body.content)
     await request.app.state.storage.add_invoice(response, body.content)
     return response
+
+
+@app.post("/search")
+async def search_db(request: Request, body: SearchRequest):
+    search_result = await request.app.state.storage.search(body.query, body.limit)
+    return search_result
